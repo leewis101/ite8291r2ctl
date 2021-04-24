@@ -117,7 +117,7 @@ impl KeyboardController {
 
     pub fn parse_brightness(value: usize) -> Result<u8, BrightnessParseError> {
         let brightness = [0x00, 0x08, 0x16, 0x24, 0x32];
-        if value > brightness.len() {
+        if value >= brightness.len() {
             return Err(BrightnessParseError);
         }
         return Ok(brightness[value]);
@@ -125,7 +125,7 @@ impl KeyboardController {
 
     pub fn parse_speed(value: usize) -> Result<u8, SpeedParseError> {
         let speeds = [0x0a, 0x07, 0x05, 0x03, 0x01];
-        if value > speeds.len() {
+        if value >= speeds.len() {
             return Err(SpeedParseError);
         }
         return Ok(speeds[value]);
