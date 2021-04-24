@@ -1,0 +1,11 @@
+[package]
+name = "ite8291r2_ctl"
+version = "0.1.0"
+authors = ["leewis <simpleiland@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hidapi = { version = "1", default-features = false, features = ["linux-shared-hidraw"] }
+structopt = { version = "0.3", default-features = false }
