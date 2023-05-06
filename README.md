@@ -19,14 +19,6 @@ Revision: "0.02" <-----------------------
 ...
 ```
 
-# Dependencies
-
-This utility depends on hidapi. Install it first:
-
-```
-sudo apt install libhidapi-dev
-```
-
 # Running it without root privileges
 
 By default you need *root* privileges if you want to use this utility. you can create a `udev` rule to allow everyone on your system to access this particular USB device, and thus you won't need to run the program as `root`.
