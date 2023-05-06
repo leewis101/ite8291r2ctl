@@ -1,6 +1,6 @@
 # What is it?
 
-A utility controlling ITE Device(8291) Rev 0.02 RGB keyboard backlight in Linux.
+A utility controlling ITE Device(8291) Rev 0.02 RGB keyboard backlight in Linux. The keyboard control code is ported from [tongfang-utility](https://github.com/kirainmoe/tongfang-utility).
 
 # Compatibility
 
@@ -33,21 +33,17 @@ after creating the file, reboot.
 # Usage
 
 ```
-USAGE:
-    ite8291r2_ctl [FLAGS] [OPTIONS] --effect <effect>
+Usage: ite8291r2_ctl [OPTIONS] --effect <EFFECT>
 
-FLAGS:
-    -h, --help       Prints help information
-    -S, --save       Save the settings
-    -V, --version    Prints version information
-
-OPTIONS:
-    -b, --brightness <brightness>    Brightness of the effect: 0-4 [default: 2]
-    -c, --color <color>              Color of the effect
-    -d, --direction <direction>      Direction of the effect: left, right
-    -e, --effect <effect>            Keyboard backlight effect: monocolor, breathing, wave, rainbow, flash, mix, disable
-    -s, --speed <speed>              Speed of the effect: 0-4
-
+Options:
+  -e, --effect <EFFECT>          keyboard backlight effect [possible values: mono, breath, wave, rainbow, flash, mix, disable]
+  -S, --save                     save settings
+  -b, --brightness <BRIGHTNESS>  keyboard backlight brightness from 1 to 5 [default: 3]
+  -c, --color <COLOR>            keybarod backlight color hex code, e.g. #ff0000
+  -d, --direction <DIRECTION>    keybarod backlight moving direction [possible values: left, right]
+  -s, --speed <SPEED>            keybarod backlight moving speed from 1 to 5
+  -h, --help                     Print help
+  -V, --version                  Print version
 ```
 
 e.g. `ite8291r2_ctl --effect rainbow`
