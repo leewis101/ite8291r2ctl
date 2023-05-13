@@ -1,5 +1,5 @@
 [package]
-name = "ite8291r2_ctl"
+name = "ite8291r2ctl"
 version = "0.1.0"
 authors = ["leewis <simpleiland@gmail.com>"]
 edition = "2018"
