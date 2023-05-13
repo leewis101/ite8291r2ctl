@@ -9,4 +9,3 @@ edition = "2018"
 [dependencies]
 clap = {version = "4.2.7", features = ["derive", "string"] }
 hidapi = { version = "2.2.2", default-features = false, features = ["linux-static-hidraw"] }
-thiserror = "1.0.40"
