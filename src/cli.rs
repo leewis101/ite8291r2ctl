@@ -13,14 +13,14 @@ pub struct Arg {
     /// save settings
     #[arg(short = 'S', long, default_value_t = false)]
     pub save: bool,
-    /// keyboard backlight brightness from 1 to 5
+    /// keyboard backlight brightness
     #[arg(short,
         long,
-        value_parser = Brightness::from_str,
+        value_parser = BrightnessParser,
         default_value = "3",
     )]
     pub brightness: Brightness,
-    /// keybarod backlight color hex code, e.g. #ff0000 
+    /// keybarod backlight color hex code, e.g. #ff0000
     #[arg(
         short,
         long,
@@ -39,11 +39,11 @@ pub struct Arg {
         required_if_eq("effect", "flash")
     )]
     pub direction: Option<Direction>,
-    /// keybarod backlight moving speed from 1 to 5
+    /// keybarod backlight moving speed
     #[arg(
         short,
         long,
-        value_parser = Speed::from_str,
+        value_parser = SpeedParser,
         required = false,
         required_if_eq("effect", "breath"),
         required_if_eq("effect", "wave"),
@@ -83,19 +83,31 @@ impl fmt::Display for Brightness {
     }
 }
 
-#[derive(Error, Debug)]
-#[error("invalid brightness")]
-pub struct InvalidBrightness;
+#[derive(Clone)]
+struct BrightnessParser;
 
-impl std::str::FromStr for Brightness {
-    type Err = InvalidBrightness;
+impl clap::builder::TypedValueParser for BrightnessParser {
+    type Value = Brightness;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let idx: usize = s.parse().map_err(|_| InvalidBrightness)?;
-        if idx < 1 || idx > Self::VALUES.len() {
-            return Err(InvalidBrightness);
-        }
-        Ok(Self { index: idx - 1 })
+    fn parse_ref(
+        &self,
+        cmd: &clap::Command,
+        arg: Option<&clap::Arg>,
+        value: &std::ffi::OsStr,
+    ) -> Result<Self::Value, clap::Error> {
+        let inner = clap::value_parser!(u8).range(0i64..Brightness::VALUES.len() as i64);
+        let val = inner.parse_ref(cmd, arg, value)?;
+        Ok(Brightness {
+            index: val as usize,
+        })
+    }
+
+    fn possible_values(
+        &self,
+    ) -> Option<Box<dyn Iterator<Item = clap::builder::PossibleValue> + '_>> {
+        Some(Box::new(Brightness::VALUES.iter().enumerate().map(
+            |(i, _)| clap::builder::PossibleValue::new(i.to_string()),
+        )))
     }
 }
 
@@ -118,19 +130,31 @@ impl fmt::Display for Speed {
     }
 }
 
-#[derive(Error, Debug)]
-#[error("invalid speed")]
-pub struct InvalidSpeed;
+#[derive(Clone)]
+struct SpeedParser;
 
-impl std::str::FromStr for Speed {
-    type Err = InvalidSpeed;
+impl clap::builder::TypedValueParser for SpeedParser {
+    type Value = Speed;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let idx: usize = s.parse().map_err(|_| InvalidSpeed)?;
-        if idx < 1 || idx > Self::VALUES.len() {
-            return Err(InvalidSpeed);
-        }
-        Ok(Self { index: idx - 1 })
+    fn parse_ref(
+        &self,
+        cmd: &clap::Command,
+        arg: Option<&clap::Arg>,
+        value: &std::ffi::OsStr,
+    ) -> Result<Self::Value, clap::Error> {
+        let inner = clap::value_parser!(u8).range(1i64..=Speed::VALUES.len() as i64);
+        let val = inner.parse_ref(cmd, arg, value)?;
+        Ok(Speed {
+            index: (val - 1) as usize,
+        })
+    }
+
+    fn possible_values(
+        &self,
+    ) -> Option<Box<dyn Iterator<Item = clap::builder::PossibleValue> + '_>> {
+        Some(Box::new(Speed::VALUES.iter().enumerate().map(|(i, _)| {
+            clap::builder::PossibleValue::new((i + 1).to_string())
+        })))
     }
 }
 
